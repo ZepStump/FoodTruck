@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Map, GoogleApiWrapper, Marker } from 'google-maps-react';
 import axios from "axios";
+//import logo from "https://maps.gstatic.com/mapfiles/ms2/micons/blue-pushpin.png"
 const MapContainer = (props) => {
   const [map, setMap] = useState(null);
   const [current, setCurrent] = useState({lat: 37.7749, lng: -122.4194});
@@ -22,6 +23,22 @@ const MapContainer = (props) => {
     getGeoInfo();
   }, []);
 
+  const onLoad = React.useCallback(function callback(map) {
+    setMap(map);
+
+    setInterval((props) => {
+      console.log("refreshed");
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position) => {
+          setCurrent({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          });
+        });
+      }
+    }, 200);
+  }, []);
+
   return (
     <Map
       google={props.google}
@@ -30,17 +47,13 @@ const MapContainer = (props) => {
         lat: current.lat,
         lng: current.lng
       }}
-      onReady={(mapProps, map) => setMap(map)} >
+      onReady={(mapProps, map) => setMap(map)}
+      onLoad={onLoad} >
 
-      <Marker position={{ lat: current.lat, lng: current.lng}} 
-          
+      <Marker 
+          position={{ lat: current.lat, lng: current.lng}}           
           icon={"https://maps.gstatic.com/mapfiles/ms2/micons/blue-pushpin.png"}
-          style={{
-            backgroundColor: "#0000ff",
-            fillColor: "#0000ff",
-            strokeColor: "0000ff",
-            scale: 2,
-          }}/>
+          />
 
       <Marker position={{ lat: 37.74383117213268, lng: -122.37779736896212 }} />
       <Marker position={{ lat: 37.793262206923096, lng: -122.4017890913628 }} />
@@ -303,7 +316,21 @@ const MapContainer = (props) => {
       <Marker position={{ lat: 37.785469746489916, lng:  -122.40661576107294}} />
       <Marker position={{ lat: 37.79694900602121, lng:  122.40218343189426}} />
       <Marker position={{ lat: 37.779051111573146, lng:  -122.39830388133372}} />
-      
+      <Marker position={{ lat: 37.750464115522504, lng: -122.38790832590168}} />
+      <Marker position={{ lat: 37.764052089924235, lng: -122.39014439398791}} />
+      <Marker position={{ lat: 37.76360804110198, lng: -122.50959579624613}} />
+      <Marker position={{ lat: 37.805049509058854, lng: -122.41433443693992}} />
+      <Marker position={{ lat: 37.76329905604463, lng: -122.38848230680541}} />
+      <Marker position={{ lat: 37.7636598013494, lng: -122.38913385740454}} />
+      <Marker position={{ lat: 37.75169103572294, lng: -122.3943742132628}} />
+      <Marker position={{ lat: 37.783171104343396, lng: -122.39290104947858}} />
+      <Marker position={{ lat: 37.75240499247832, lng: -122.38700019629786}} />
+      <Marker position={{ lat: 37.74944293760035, lng: -122.38798553250403}} />
+      <Marker position={{ lat: 37.751608413578936, lng: -122.39030948950146}} />
+      <Marker position={{ lat: 37.788457028828915, lng: -122.3998841605663}} />
+      <Marker position={{ lat: 37.723078757516, lng: -122.38752570401662}} />
+      <Marker position={{ lat: 37.770683395042624, lng: -122.42087956139908}} />
+      <Marker position={{ lat: 37.74758627625646, lng: -122.39886570079622}} />
     </Map>
   );
 }
